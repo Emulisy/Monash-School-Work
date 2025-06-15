@@ -1,0 +1,57 @@
+'''
+Task Description
+Write a function check_end that will take in two parameters: 
+
+a character name string, and,
+
+a list containing single-digit numerical or lowercase single-letter alphabetical string values
+
+It should return a boolean True if one of the following conditions have been followed:
+
+For name longer than 10 letters, the total of all numerical values from the list exceeds 10.
+
+For one word name, the list contains three or more unique letters from the character's name.
+
+For name with three vowels, the list contains the 3 vowels in the character name.
+
+and False otherwise.
+'''
+
+
+def check_end(name,input_list):
+    name = name.lower()
+    vowel_in_name = []
+    vowels = ["a","e","i","o","u"]
+
+    for each_char in name:
+        if each_char in vowels:
+            vowel_in_name.append(each_char)
+    if len(vowel_in_name) == 3:
+        print(f"Win Condition: Collect three vowels in {name}")
+        for element in set(vowel_in_name):
+            if vowel_in_name.count(element) > input_list.count(element):
+                return False
+            else:
+                print(f"{name} met end condition!")
+                return True
+    else:
+        if len(name.split(" ")) == 1:
+            print(f"Win Condition: Collect three unique letters in {name}")
+            count = 0
+            for each_value in input_list:
+                if each_value in name:
+                    count += 1
+            if count >= 3:
+                print(f"{name} met end condition!")
+                return True
+        elif len(name.replace(" ","")) > 10:
+            Sum = 0
+            print("Win Condition: Collect a sum exceeding 10.")
+            for each_value in input_list:
+                if each_value.isdigit():
+                    Sum += int(each_value)
+            if Sum > 10:
+                print(f"{name} met end condition!")
+                return True
+                
+    return False

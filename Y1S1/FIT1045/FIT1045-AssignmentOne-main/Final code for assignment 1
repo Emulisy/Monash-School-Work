@@ -1,0 +1,346 @@
+#Assignment1 for FIT1045
+#By Ian Zhang 35545534
+
+
+# --- GIVEN LISTS: BOARD AND CHARACTERS TO CHOOSE FROM ---
+
+THE_EDGE_OF_INSANITY_1 = [
+['b', '1', 'b', 'e', 't', 'g', 'e', 'l', '1', '7', 'r', 'u', 's', 'c', 'k', 'f'],
+['e', 't', 'e', 'b', '2', 'a', '8', 'l', 'y', '2', '4', 'a', 'n', 'd', 'i', 'i'],
+['g', 'h', 'e', 'g', 'o', 'j', '6', 'd', 'k', 's', 'r', 'i', 'x', 'e', 'u', 'n'],
+['i', '3', 'l', 'o', 'c', '2', '2', 'e', 'k', '1', '3', '8', 'l', 'j', 'd', 'a'],
+['n', 'l', 'i', '1', '5', 't', '3', 'n', 't', '8', 'j', 'o', 'e', 'a', '7', 'l']
+]
+
+THE_EDGE_OF_INSANITY_2 = [
+['b', 'o', 's', '4', '8', 'a', 'g', '4', '1', 'e', '7', 'e', '2', 'l', 'o', 'j', 'a', 'a', '3', 'r', 'f'],
+['e', 'a', 'a', '3', 'r', 'g', 'e', 'c', '9', 'p', 'c', 'y', '6', 'a', 'e', 'k', '5', 'e', 'a', '6', 'i'],
+['g', '5', 'e', 'a', '6', 'd', 'l', 's', 'h', '5', 'd', 'j', 'l', 'b', 'l', 'u', 'y', 'i', 'k', 'o', 'n'],
+['i', 'y', 'i', 'k', 'o', '3', 'a', '7', 'k', 'y', 's', 'o', '7', 'r', 'e', 'c', '8', '1', 'p', 'a', 'a'],
+['n', '8', '1', 'p', 'a', 'r', '1', 'k', 'a', 'e', 'l', 'o', 'a', 'o', '2', 'l', '6', 'b', 'e', 'r', 'l'],
+['-', '6', 'b', 'e', 'r', 'o', 'n', 'i', '4', 'j', 'k', 'r', 'a', 't', 'n', '8', 'u', 'c', 'g', 'd', '-']
+]
+
+THE_EDGE_OF_INSANITY_3 = [
+['l', '1', 'b', 'e', 't', 'g', 'e', 'l', '1', '7', 'r', 'u', 's', 'c', 'k', 'f', '9', 'x', 'm', 'o', 'f'],
+['e', 't', 'e', 'b', '2', 'a', '8', 'l', 'y', '2', '4', 'a', 'n', 'd', 'i', 'i', 'v', 'p', '6', 'h', 'i'],
+['f', 'h', 'e', 'g', 'o', 'j', '6', 'd', 'k', 's', 'r', 'i', 'x', 'e', 'u', 'n', 'b', 'o', 'z', 'c', 'n'],
+['t', '3', 'l', 'o', 'c', '2', '2', 'e', 'k', '1', '3', '8', 'l', 'j', 'd', 'a', 'q', 'f', '9', 't', 'a'],
+['w', 'l', 'i', '1', '5', 't', '3', 'n', 't', '8', 'j', 'o', 'e', 'a', '7', 'l', 'g', '7', 'r', 'w', 'l'],
+['a', 'v', 'b', 'o', 'i', 'w', '1', 'y', 'p', 'l', 'e', '7', 'h', 'j', '6', 't', 'c', 'q', '3', 'x', '-'],
+['r', 'u', 's', '4', 'm', 'n', '9', 'g', 'f', 'y', 'o', '5', 'c', '3', '2', 'x', 'h', 'd', '1', 'i', 'e'],
+['d', '5', 'j', 'q', '9', 'l', 'b', 't', 'o', 'w', 'p', '2', 'n', 'k', '8', 'j', 's', 'z', 'e', 'l', 'n'],
+['-', '3', 'l', 'o', 'c', '2', 'd', 'a', 'q', 'f', '9', 't', '2', 'e', 'k', '1', '3', '8', 'l', 'j', 'd']
+]
+
+VALID_CHARACTERS1 = ["CJ7", "Dora", "Elsa", "Finn from Adventure Time", "Goku", 
+"Kirby", "Mr Peabody", "Optimus Prime", "Spongebob Squarepants", "Xi Yang Yang"]
+
+VALID_CHARACTERS2 = ["Calvin Duran", "Olaf", "Sokka", "Griffith", "Jeremi Krrr", 
+"Daisy Duck", "Peter Pan", "Thanos", "Peter Parker", "Harley Quinn", "Gollum", "Draco Malfoy"]
+
+# --- ADD FUNCTIONS RELATED TO CHECKPOINT 1 HERE ---
+
+#check the category of characters(not used)
+def check_character_category(name):
+    vowel_count = 0
+    for each_char in name:
+        if each_char in ["a", "e", "i", "o", "u"]:
+            vowel_count += 1
+    if vowel_count == 3:
+        return "name with three vowels"
+    else:
+        if len(name.split(" ")) == 1:
+            return "one word name"
+        elif len(name.replace(" ", "")) > 10:
+            return "name longer than 10 letters"
+
+#sort the category of characters and return the tuple of three types
+def sort_character_category(name_list: list)->tuple:
+    vowel_set = {"a", "e", "i", "o", "u"}
+    one_word = []
+    three_vowels = []
+    ten_word_plus = []
+
+    for each_name in name_list:
+        # Count vowels in the name
+        vowel_count = sum(1 for char in each_name.lower() if char in vowel_set)
+
+        # Categorize
+        if vowel_count == 3:
+            three_vowels.append(each_name)
+        elif len(each_name.split(" ")) == 1:
+            one_word.append(each_name)
+        elif len(each_name.replace(" ", "")) > 10:
+            ten_word_plus.append(each_name)
+
+    return one_word, three_vowels, ten_word_plus
+
+
+# --- ADD FUNCTIONS RELATED TO CHECKPOINT 2 HERE ---
+
+#visualise the board and turn the word on the position to "*"
+def visualise_board(board: list, position: list or None):
+    #visualise the initial board if the position is None
+    if position is None:
+        for row_index in range(len(board)):
+            print(" ".join(board[row_index]))
+    else:
+        for row_index in range(len(board)):
+            if row_index == position[0]:
+                for column_index in range(len(board[0])):
+                    if column_index == position[1]:
+                        former_char = board[row_index][column_index]
+                        board[row_index][column_index] = "*"
+                        print(" ".join(board[row_index]))
+                        board[row_index][column_index] = former_char
+            else:
+                print(" ".join(board[row_index]))
+
+
+# --- ADD FUNCTIONS RELATED TO TASK 7 HERE ---
+
+#check of the characters suffice ending condition for hard mode
+def check_end(name:str, input_list:list)->bool:
+    name_lower = name.lower()
+    vowel_in_name = []
+    vowels = ["a", "e", "i", "o", "u"]
+
+    for each_char in name_lower:
+        if each_char in vowels:
+            vowel_in_name.append(each_char)
+    if len(vowel_in_name) == 3: # name with three vowels
+        print(f"Win Condition: Collect three vowels in {name}")
+        for element in input_list:
+            if element in vowel_in_name:
+                vowel_in_name.remove(element)
+        if len(vowel_in_name) == 0:
+            print(f"{name} met end condition!")
+            return True
+    else:
+        if len(name_lower.split(" ")) == 1: # one word name
+            print(f"Win Condition: Collect three unique letters in {name}")
+            count = 0
+            for each_value in input_list:
+                if each_value in name_lower:
+                    count += 1
+            if count >= 3:
+                print(f"{name} met end condition!")
+                return True
+        elif len(name_lower.replace(" ", "")) > 10: #name with more than 10 letters
+            my_sum = 0
+            print("Win Condition: Collect a sum exceeding 10")
+            for each_value in input_list:
+                if each_value.isdigit():
+                    my_sum += int(each_value)
+            if my_sum > 10:
+                print(f"{name} met end condition!")
+                return True
+
+    return False
+
+
+# --- ADD MAIN CODE HERE THAT RUNS THE GAME ---
+
+# given the current position and the board selected and the name and the list of object the player has collected,
+#move the "*" according to the direction chosen and return the position and selected object after the move
+def move(row_index:int, column_index:int, selected_board:list, name,input_list:list,mode)->tuple or bool:
+    former_position = [row_index, column_index]
+    print(f"\n{name}'s current position:")
+    visualise_board(selected_board, [row_index, column_index])
+    # keep asking for direction if the direction is invalid
+    while True:
+        direction = input(f"\nChoose a direction for {name} (u, d, l, r): ")
+        # update the index
+        if direction == "u":
+            row_index -= 1
+        elif direction == "d":
+            row_index += 1
+        elif direction == "l":
+            column_index -= 1
+        elif direction == "r":
+            column_index += 1
+
+        # check if the index is out of range
+        if row_index not in range(0, len(selected_board)) or column_index not in range(0, len(selected_board[row_index])):
+            print("Invalid direction. Please try again.")
+            row_index = former_position[0]
+            column_index = former_position[1]
+            continue
+        else:
+            break
+    if mode == "Hard":
+        input_list.append(selected_board[row_index][column_index])
+        print(f"Collected: {input_list}")
+    return row_index, column_index, input_list
+
+# check if the player reached the stopping position in simple mode
+def check_simple(row_index:int, column_index:int, selected_board:list, name:str, stopping_position:str)->bool:
+    if selected_board[row_index][column_index] == stopping_position:
+        print(f"{name} reached {stopping_position}!")
+        return True
+    else:
+        visualise_board(selected_board, [row_index, column_index])
+        print(f"{name} has moved!")
+        return False
+
+#choose a starting point for current character and return the row index of the character
+def choose_starting_point(board:list, gamer:str)->int:
+    column0 = []
+    for each_row in board:
+        column0.append(each_row[0])
+    starting_point = input(f"\nChoose a starting position for {gamer} ({", ".join(column0)}): ")
+    for row_index in range(len(column0)):
+        if starting_point == column0[row_index]:
+            visualise_board(board, [row_index, 0])
+            return row_index
+
+# given the list of characters to choose from, choose characters for hard and simple mode and return the list of characters chosen
+def choose_characters(all_char:list)->list:
+    one_word, three_vowels, ten_word_plus = sort_character_category(all_char)
+    count = 0
+    selected = []
+    category = []
+    category_name = ""
+
+    # ask for the first input and determine the category
+    while True:
+        name = input("\nEnter a character name: ")
+        if name in all_char:
+            if name in ten_word_plus:
+                category, category_name = ten_word_plus, "name longer than 10 letters"
+            elif name in one_word:
+                category, category_name = one_word, "one word name"
+            elif name in three_vowels:
+                category, category_name = three_vowels, "name with three vowels"
+            selected.append(name)
+            count += 1
+            print(f"Congrats, you have added {name} to your team!")
+            break
+        else:
+            print("Invalid character name. Please try again.")
+
+    if input("\nDo you wish to continue? (Y/N) ") == "Y":
+        #keep asking for input if the name is invalid or repeated
+        while True:
+            name = name = input("\nEnter a character name: ")
+            # check if character was already chosen
+            if name in selected:
+                print(f"You have already chosen {name}. Please try again.")
+                continue
+
+            # add character to the team if the input is in the chosen category
+            elif name in category:
+                # exit loop if there is no char in chosen category
+                if count + 1 == len(category):
+                    selected.append(name)
+                    count += 1
+                    print(f"Congrats, you have added {name} to your team!")
+                    print(f"No more characters fit the '{category_name}' category.")
+                    break
+                else:
+                    selected.append(name)
+                    count += 1
+                    print(f"Congrats, you have added {name} to your team!")
+
+            # continue if the input is not in the chosen category
+            elif name in all_char:
+                print(f"{name} does not fit the '{category_name}' category. Please try again.")
+                continue
+
+            # continue if input invalid character
+            else:
+                print("Invalid character name. Please try again.")
+                continue
+
+            # ask if user wants to continue
+            if count < len(category):
+                if input("\nDo you wish to continue? (Y/N) ") == "N":
+                    break
+            else:
+                continue
+
+    # output the number of char selected, mind "s" if there are more than 1 char
+    print(f"You have {count} character{'s' if count > 1 else ''} in your team!")
+
+    return selected
+
+#main function
+def main():
+    print('Welcome to the Edge of Insanity!')
+    #simple mode
+    if input("Easy Mode? (Y/N) ") == "Y":
+        selected_name = []
+        selected_board = []
+        all_char = VALID_CHARACTERS1
+        selected_name = choose_characters(all_char)
+
+        #choose board from 1,2
+        board_select = eval(input("\nChoose a board (1, 2): "))
+        if board_select == 1:
+            selected_board = THE_EDGE_OF_INSANITY_1
+        elif board_select == 2:
+            selected_board = THE_EDGE_OF_INSANITY_2
+        visualise_board(selected_board,None)
+        #choose stopping position
+        stopping_position = input("\nChoose a value for the game's stopping point: ")
+        #a dictionary that contains the name of character and its position and selected object
+        name_dict = {}
+        for each_name in selected_name:
+            name_dict[each_name] = []
+            input_list = []
+            row_index = choose_starting_point(selected_board, each_name)
+            column_index = 0
+            name_dict[each_name].extend([row_index, column_index, input_list])
+        #keep moving if the no character reached stopping position
+        game_end = False
+        while not game_end:
+            for each_name in selected_name:
+                #take turns to move
+                name_dict[each_name][0], name_dict[each_name][1],name_dict[each_name][2] = move(name_dict[each_name][0], name_dict[each_name][1], selected_board, each_name, name_dict[each_name][2],"Simple")
+                if check_simple(name_dict[each_name][0], name_dict[each_name][1], selected_board, each_name, stopping_position):
+                    game_end = True
+                    break
+
+    #hard mode
+    else:
+        all_char = []
+        #choose character list
+        if input("\nChoose a valid character list (1, 2): ") == "1":
+            all_char = VALID_CHARACTERS1
+        else:
+            all_char = VALID_CHARACTERS2
+        
+        #select name
+        selected_name = choose_characters(all_char)
+        #select board
+        board_select = eval(input("\nChoose a board (1, 2, 3): "))
+        if board_select == 1:
+            selected_board = THE_EDGE_OF_INSANITY_1
+        elif board_select == 2:
+            selected_board = THE_EDGE_OF_INSANITY_2
+        else:
+            selected_board = THE_EDGE_OF_INSANITY_3
+        visualise_board(selected_board, None)
+        # a dictionary that contains the name of character and its position and selected object
+        name_dict = {}
+        for each_name in selected_name:
+            name_dict[each_name] = []
+            input_list = []
+            row_index = choose_starting_point(selected_board, each_name)
+            column_index = 0
+            input_list.append(selected_board[row_index][0])
+            name_dict[each_name].extend([row_index, column_index, input_list])
+
+        
+        game_end = False
+        # keep moving if not end
+        while not game_end:
+            for each_name in selected_name:
+                name_dict[each_name][0], name_dict[each_name][1],name_dict[each_name][2] = move(name_dict[each_name][0], name_dict[each_name][1], selected_board, each_name, name_dict[each_name][2],"Hard")
+                if check_end(each_name, name_dict[each_name][2]):
+                    game_end = True
+                    break
+
+if __name__ == "__main__": #do not remove this to avoid failing tests
+    main()

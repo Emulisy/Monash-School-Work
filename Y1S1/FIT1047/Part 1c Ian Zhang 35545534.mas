@@ -1,0 +1,66 @@
+﻿//////////////////////////////////////////////////////////
+//// FIT 1047 Oct 2024, Assignment 2, Part 1c
+////
+////  Student name: Ian Zhang
+//// Student email:izha0007@student.monash.edu
+////    Student ID:35545534
+////////////////////////////////////////////////////////
+
+/ Final code with the disassembled MARIE program,
+/ added labels and comments
+
+//The program substitutes the input value to every value in the list
+Jump Main
+HEX 0000
+HEX 0000
+HEX 0000
+Subtractor,  HEX  0
+//main 
+Main,  JnS  Subroutine1
+		Load Input
+		Store Subtractor
+		JnS Subroutine2
+		Jump  DONE
+//main end
+
+Subroutine1, HEX  0//ask for input and store
+		Input
+		Store Input
+        JumpI Subroutine1
+Input, 		DEC 0
+
+ListIndex, HEX 0
+Subroutine2, HEX 0
+begin,    	Load Count
+        	Skipcond 000 // Stop subroutine once substituted every 6 values in list
+        	Jump  SubtInput
+        	JumpI Subroutine2
+			
+            // ListIndex = ListBegin + Count
+SubtInput,	Load ListBegin
+        Add Count
+        Store ListIndex
+        
+        //Count = Count -1
+        Load Count
+        Subt One
+        Store Count
+        
+        // value in List-Subtractor
+        LoadI ListIndex
+        Subt Subtractor
+        StoreI ListIndex
+        Jump begin
+
+DONE, Halt
+
+One, DEC 1
+ListBegin, HEX  22 //Stores the address of the first number in the list
+List, HEX 56
+	  HEX 5A
+	  HEX 17
+	  HEX 31
+	  HEX 1D
+	  HEX 35
+Count,HEX 5 //count the number of values substitued
+

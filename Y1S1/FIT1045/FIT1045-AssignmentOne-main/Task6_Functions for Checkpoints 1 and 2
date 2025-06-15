@@ -1,0 +1,42 @@
+'''
+Create the following two functions:
+
+Use the appropriate lines of codes from Task 1-2 to create the following function: 
+check_character_category that takes in a string character name and returns one of the following strings: one word name, name with three vowels or name longer than 10 letters. 
+
+Use the appropriate lines of codes from Task 3 to create the following function:
+visualise_board that takes in a nested list board and a position (in the form of a [row, column] list or None). 
+The function prints the board, marking the specified position with an asterisk *.
+However, should the position be None, the board is printed without any asterisks. The original board should not be modified.
+'''
+
+
+def check_character_category(name):
+    vowel_count=0
+    for each_char in name:
+        if each_char in ["a","e","i","o","u"]:
+            vowel_count += 1
+    if vowel_count == 3:
+        return "name with three vowels"
+    else:
+        if len(name.split(" ")) == 1:
+            return "one word name"
+        elif len(name.replace(" ","")) > 10:
+            return "name longer than 10 letters"
+
+def visualise_board(board,position):
+        former_char = ""
+        if position is None:
+            for row_index in range(len(board)):
+                print(" ".join(board[row_index]))
+        else:
+            for row_index in range(len(board)):
+                if row_index == position[0]:
+                    for column_index in range(len(board[0])):
+                        if column_index == position[1]:
+                            former_char = board[row_index][column_index]
+                            board[row_index][column_index] = "*"
+                            print(" ".join(board[row_index]))
+                            board[row_index][column_index] = former_char
+                else:
+                    print(" ".join(board[row_index]))

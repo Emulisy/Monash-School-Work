@@ -1,0 +1,311 @@
+﻿//////////////////////////////////////////////////////////
+//// FIT 1047 Oct 2024, Assignment 2, Part 1d
+////
+////  Student name:Ian Zhang
+//// Student email:izha0007@student.monash.edu
+////    Student ID:35545534
+//////////////////////////////////////////////////////////
+
+/ Main program: call the SubDigitTimer subroutine and then halt
+JnS SubDigitTimer
+Halt
+
+//////////////////////////////////////////////////////////
+//// Task 1: Reset the display
+//////////////////////////////////////////////////////////
+
+/ TO DO: Add your subroutine for clearing the screen here
+
+SubResetDisplay, HEX 0 
+Begin,		Load BlockPt
+            Subt EndPt
+			Skipcond 800 //Loop through every block between 0F00 and 0FFF
+            	Jump StartPainting
+                JumpI SubResetDisplay
+StartPainting,      Load BlockPt
+				    Store Block
+                	Load White
+					StoreI Block
+					//BlockPt += 1
+                    Load BlockPt
+					Add One
+                	Store BlockPt 
+                	Jump Begin
+
+White, HEX FFFF
+BlockPt, HEX 0F00  //Block Pointer
+Block,HEX 0 //Current block that needs to be painted white
+One, HEX 1
+EndPt, HEX 0FFF //End at 0FFF
+				
+
+//////////////////////////////////////////////////////////
+//// Task 2: Painting a number
+//////////////////////////////////////////////////////////
+
+/ TO DO: Add your subroutine for painting a digit below.
+DigitDataAddress, HEX 0  //store the address of digit pixels
+DigitDisplayAddress, HEX 0 //Store the address of current pixel on graph
+SubDrawDigit, HEX 0 
+	Load DigitPixelsAddr 
+	Store DigitDataAddress
+    Load StartingPt
+	Store DigitDisplayAddress
+RowLoop,	Clear
+		Store ColumnOffSet //reset column offset to 0 when each row starts
+		Load RowOffset
+		Subt Five
+		Skipcond 000 //loop five times for five rows
+          Jump Stop
+          //RowOffset -= 1
+	      Load RowOffset 
+          Add One
+          Store RowOffset
+          //DigitDisplayAddress += 13 (to get to the next row)
+          Load DigitDisplayAddress 
+          Add Thirteen
+          Store DigitDisplayAddress
+          Jump ColumnLoop
+ColumnLoop,		Load ColumnOffSet
+			Subt Three
+			Skipcond 000 // jump if ColumnOffSet - 3 < 0
+            Jump RowLoop
+			LoadI  DigitDataAddress
+			StoreI  DigitDisplayAddress
+            //ColumnOffset += 1
+            Load ColumnOffSet
+			Add One
+            Store ColumnOffSet
+            //DigitDataAddress += 1
+			Load DigitDataAddress
+			Add One
+			Store DigitDataAddress
+            //DigitDisplayAddress += 1
+			Load DigitDisplayAddress
+			Add One
+            Store DigitDisplayAddress
+            Jump ColumnLoop
+Stop,	Clear  /reset all arguments for next call
+		Store DigitDataAddress
+		Store DigitDisplayAddress
+		Store RowOffset
+		Store ColumnOffSet
+		JumpI SubDrawDigit
+				
+			
+RowOffset, HEX 0 //ranging from 1 to 5
+ColumnOffSet,HEX 0  //ranging from 1 to 3
+StartingPt, HEX 0F49
+Five, HEX 5
+Three,HEX 3
+Thirteen, HEX D
+//////////////////////////////////////////////////////////
+//// Task 3: Create a countdown timer
+//////////////////////////////////////////////////////////
+
+/ TO DO: Add your subroutine for the countdown, and any
+/        additional subroutines you implement, below.
+
+SubDigitTimer, HEX 0
+	JnS SubResetDisplay //reset display
+    Load DigitPixelsAddr
+	Add OneThirtyFive  // starting from the digit 9 (15*9=135 away from the digit 0)
+    Store DigitPixelsAddr
+Start,	Load DigitPixelsAddr
+		Subt ZeroDigitAddr
+        Skipcond 000  //loop until finish displaying 0
+          Jump Cont
+          JumpI SubDigitTimer
+Cont,		JnS SubDrawDigit	//starting painting current digit
+			//DigitPixelsAddr -= 15
+            Load DigitPixelsAddr
+			Subt Fifteen
+			Store DigitPixelsAddr 
+			JnS SubPause //Pause for a moment
+            Jump Start
+		
+Fifteen, DEC 15
+OneThirtyFive, DEC 135
+ZeroDigitAddr, Adr DigitPixels //address of the first pixel of zero, the last digit to display
+
+SubPause,	HEX 0  //Subroutine to pause for a moment after each digit is displayed
+			Clear	
+LoopSubPause,Load Temp  //Loop thirty times
+        	 Subt Fifty
+        	 Skipcond 000
+               Jump StopSubPause
+               //Temp += 1
+               Load Temp
+               Add One
+               Store Temp
+               Jump LoopSubPause
+StopSubPause, Clear
+			  Store Temp  //reset temp for next calling
+              JumpI SubPause
+
+Temp, HEX 0
+Fifty, DEC 50
+//////////////////////////////////////////////////////////
+//// Data: You don't need to change or add anything below
+//////////////////////////////////////////////////////////
+
+/ Address of the digit data
+DigitPixelsAddr, Adr DigitPixels
+
+/ The digit data:
+/ Each character is 3 pixels wide and 5 pixels high.
+/ It is represented as 15 consecutive words of memory,
+/ in "row-major order". That means that the first three
+/ words represent the top-most row of pixels, the next
+/ three words the second row, and so on.
+
+DigitPixels, HEX FFFF       / Start of character 0
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX FFFF       / Start of character 1
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX 0
+      HEX FFFF
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX FFFF
+      HEX 0
+      HEX 0          / Start of character 2
+      HEX 0
+      HEX FFFF
+      HEX FFFF
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX FFFF
+      HEX 0
+      HEX 0
+      HEX 0
+      HEX 0          / Start of character 3
+      HEX 0
+      HEX FFFF
+      HEX FFFF
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX FFFF
+      HEX FFFF
+      HEX 0
+      HEX 0
+      HEX 0
+      HEX FFFF
+      HEX 0          / Start of character 4
+      HEX FFFF
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX 0
+      HEX 0
+      HEX 0
+      HEX FFFF
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX FFFF
+      HEX 0
+      HEX 0          / Start of character 5
+      HEX 0
+      HEX 0
+      HEX 0
+      HEX FFFF
+      HEX FFFF
+      HEX 0
+      HEX 0
+      HEX FFFF
+      HEX FFFF
+      HEX FFFF
+      HEX 0
+      HEX 0
+      HEX 0
+      HEX FFFF
+      HEX FFFF       / Start of character 6
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX FFFF
+      HEX 0
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX 0          / Start of character 7
+      HEX 0
+      HEX 0
+      HEX FFFF
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX FFFF
+      HEX FFFF       / Start of character 8
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX FFFF       / Start of character 9
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX 0
+      HEX FFFF
+      HEX FFFF
+      HEX 0
+      HEX FFFF
+      HEX 0
+      HEX FFFF
