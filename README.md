@@ -1,6 +1,7 @@
 # 📚 Monash University Coursework Repository
 
 This repository contains the source code and programming projects I have completed as part of my **Bachelor of Computer Science** at **Monash University**. It serves as both a portfolio and a reference for others who may benefit from these examples.  
+
 该仓库记录了我在莫纳什大学学习期间完成的部分可公开代码，供自己整理与他人参考。
 
 ---
@@ -8,23 +9,26 @@ This repository contains the source code and programming projects I have complet
 ## 🏫 About
 
 The repository is organized by **year** and **semester**, and will be updated regularly as I progress through my degree. It mainly contains assignment code from practical programming-based units.  
+
 该仓库以“年 + 学期”为结构划分，主要记录偏编程课程的大作业代码（一般每门课有 3~5 个大作业和小测验）。
 
 ---
 
 ## 📦 Repository Structure
 
+```text
 monash-coursework/
 ├── Y1S1/
-│ ├── FIT1045/
-│ │ ├── Assignment1/
-│ │ └── ...
-│ └── FIT1051/
-│ ├── Labs/
-│ └── ...
+│   ├── FIT1045/
+│   │   ├── Assignment1/
+│   │   └── ...
+│   └── FIT1051/
+│       ├── Labs/
+│       └── ...
 ├── Y1S2/
-│ └── (Coming soon)
+│   └── (Coming soon)
 └── README.md
+```
 
 > ✅ Currently updated: `Year 1, Semester 1`（第一学年第一学期）
 
